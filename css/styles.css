@@ -372,7 +372,7 @@ body {
 
 .detail.hidden { display: none; }
 
-.detail h2 { font-family: "PT Serif", serif; font-size: 20px; margin: 8px 0 2px; }
+.detail h2 { font-family: "PT Serif", serif; font-size: 20px; margin: 8px 0 2px; padding-right: 36px; }
 
 .detail-img {
   width: calc(100% + 44px);

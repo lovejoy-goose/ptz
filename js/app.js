@@ -28,7 +28,8 @@ let currentCity = null;
 
 /* ---- Карта ---- */
 const map = L.map("map", { zoomControl: false }).setView(KAR_CENTER, KAR_ZOOM);
-L.control.zoom({ position: "bottomright" }).addTo(map);
+map.attributionControl.setPrefix('');
+L.control.zoom({ position: "bottomleft" }).addTo(map);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
