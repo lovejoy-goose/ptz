@@ -1,0 +1,488 @@
+/* Петрозаводск — исторический атлас */
+
+:root {
+  --bg: #f4f1ea;
+  --panel: #ffffff;
+  --ink: #2b2724;
+  --muted: #7a736b;
+  --accent: #b5552d;
+  --line: #e3ddd2;
+  --shadow: 0 4px 24px rgba(43, 39, 36, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: "PT Sans", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- шапка ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: #2b2724;
+  color: #f4f1ea;
+  flex-shrink: 0;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+  font-size: 28px;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.brand h1 {
+  font-family: "PT Serif", serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+.brand p { font-size: 12px; color: #bdb4a8; }
+
+/* табы — теперь внутри сайдбара */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--line);
+  background: #fff;
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- раскладка ---------- */
+.layout { flex: 1; display: flex; min-height: 0; }
+
+.sidebar {
+  width: 400px;
+  min-width: 320px;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  z-index: 500;
+}
+
+#map { flex: 1; }
+
+.panel { display: none; padding: 16px; }
+.panel.active { display: block; }
+
+/* ---------- навигация по городам ---------- */
+.city-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.cnav-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+
+.cnav-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cnav-row::-webkit-scrollbar { display: none; }
+
+.cnav {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  letter-spacing: 0.02em;
+}
+
+.cnav:hover:not(.active) { background: var(--line); color: var(--ink); }
+
+.cnav.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+/* ---------- карточки городов в «Местах» ---------- */
+.city-card { cursor: pointer; }
+
+/* ---------- поиск и фильтры ---------- */
+#search {
+  width: 100%;
+  padding: 10px 14px;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  margin-bottom: 12px;
+}
+
+#search:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0.45;
+}
+
+.chip.active { opacity: 1; color: var(--ink); }
+
+.chip i {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ---------- карточки ---------- */
+.cards { display: flex; flex-direction: column; gap: 10px; }
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+  background: #fff;
+}
+
+.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+
+.card h3 { font-family: "PT Serif", serif; font-size: 16px; margin: 6px 0 2px; }
+
+/* фото места в карточке — сверху во всю ширину */
+.card-img {
+  width: calc(100% + 28px);
+  margin: -14px -14px 10px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+  display: block;
+}
+
+/* портрет в карточке личности — слева */
+.person-card { padding-left: 96px; position: relative; min-height: 110px; }
+
+.card-portrait {
+  position: absolute;
+  left: 14px; top: 14px;
+  width: 68px; height: 84px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.card-tag {
+  display: inline-block;
+  font-size: 11px;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.person-tag { background: #5d4a7e; }
+
+.card-meta { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+
+.card-text { font-size: 13px; line-height: 1.45; color: #4a443e; }
+
+.empty { color: var(--muted); text-align: center; padding: 30px 10px; }
+
+/* ---------- хроника ---------- */
+.timeline { position: relative; padding-left: 18px; }
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: var(--line);
+}
+
+.tl-item { position: relative; padding: 0 0 18px 14px; }
+
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -18px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--panel);
+  box-shadow: 0 0 0 2px var(--line);
+}
+
+.tl-year {
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 17px;
+}
+
+.tl-body h3 { font-size: 15px; margin: 2px 0 4px; }
+
+.tl-body p { font-size: 13px; line-height: 1.45; color: #4a443e; }
+
+.tl-item.linked { cursor: pointer; border-radius: 10px; }
+.tl-item.linked:hover .tl-body h3 { color: var(--accent); }
+
+.tl-go { font-size: 12px; color: var(--accent); }
+
+/* заголовок эпохи в хронике */
+.tl-era {
+  position: relative;
+  margin: 6px 0 14px -18px;
+  padding: 6px 12px;
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 8px;
+}
+
+.tl-era:first-child { margin-top: 0; }
+
+/* фото в событии хроники */
+.tl-img {
+  float: right;
+  width: 92px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0 0 6px 10px;
+  border: 1px solid var(--line);
+}
+
+/* районы и города */
+.district-tag { background: #3f7d8c; }
+.city-tag { background: #6a1b9a; }
+
+.district-label {
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-family: "PT Serif", serif;
+  font-size: 13px;
+  color: #2f5a66;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+.panel-note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+/* ---------- «О городе» ---------- */
+.about h2 { font-family: "PT Serif", serif; margin-bottom: 12px; }
+
+.about p { font-size: 14px; line-height: 1.55; margin-bottom: 10px; }
+
+.facts {
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: var(--bg);
+  font-size: 13px;
+}
+
+.facts li { padding: 4px 0; }
+
+/* ---------- карточка-деталь ---------- */
+.detail {
+  position: fixed;
+  right: 20px; bottom: 20px;
+  width: min(440px, calc(100vw - 40px));
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  z-index: 900;
+}
+
+.detail.hidden { display: none; }
+
+.detail h2 { font-family: "PT Serif", serif; font-size: 20px; margin: 8px 0 2px; }
+
+.detail-img {
+  width: calc(100% + 44px);
+  margin: -20px -22px 14px;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  display: block;
+}
+
+.detail-img.portrait {
+  width: 120px;
+  height: 150px;
+  margin: 0 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  float: right;
+  margin-left: 14px;
+}
+
+.source-note { font-size: 12px; color: var(--muted); }
+
+/* встроенная история района по периодам */
+.d-history { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+
+.d-history h4 {
+  font-family: "PT Serif", serif;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.d-period {
+  position: relative;
+  padding: 0 0 10px 14px;
+  border-left: 2px solid var(--line);
+  margin-left: 4px;
+}
+
+.d-period::before {
+  content: "";
+  position: absolute;
+  left: -5px; top: 4px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #3f7d8c;
+}
+
+.d-period-name {
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #2f5a66;
+}
+
+.d-period p { font-size: 13px; line-height: 1.5; margin-top: 2px; }
+
+.detail p { font-size: 14px; line-height: 1.55; margin-top: 8px; }
+
+.detail-close {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-size: 22px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.related { border-top: 1px solid var(--line); padding-top: 10px; }
+
+.link {
+  font: inherit;
+  border: none;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+/* ---------- кнопка «Вся Карелия» на карте ---------- */
+.map-back-btn {
+  font-family: "PT Sans", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--panel);
+  border: none;
+  padding: 7px 12px;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.map-back-btn:hover { background: var(--bg); }
+
+/* ---------- маркеры ---------- */
+.pin-dot {
+  display: block;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- адаптивность ---------- */
+@media (max-width: 760px) {
+  .layout { flex-direction: column-reverse; }
+  .sidebar { width: 100%; min-width: 0; height: 45%; border-right: none; border-top: 1px solid var(--line); }
+  #map { height: 55%; }
+  .topbar { padding: 8px 12px; }
+}

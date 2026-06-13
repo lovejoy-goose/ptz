@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карелия — исторический атлас</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">⚒</span>
+      <div>
+        <h1>Карелия</h1>
+        <p>Исторический атлас · Города, события, люди</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Навигация по городам — всегда видна -->
+      <div class="city-nav" id="city-nav"></div>
+
+      <!-- Вкладки контента -->
+      <nav class="tabs">
+        <button class="tab active" data-tab="map">Карта</button>
+        <button class="tab" data-tab="timeline">Хроника</button>
+        <button class="tab" data-tab="people">Личности</button>
+        <button class="tab" data-tab="places">Места</button>
+        <button class="tab" data-tab="about" id="tab-about">О регионе</button>
+      </nav>
+
+      <!-- Карта -->
+      <section class="panel active" id="panel-map">
+        <input type="search" id="search" placeholder="Поиск по местам, событиям, людям…">
+        <div class="chips" id="chips"></div>
+        <div class="cards" id="place-list"></div>
+      </section>
+
+      <!-- Хроника -->
+      <section class="panel" id="panel-timeline">
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <!-- Личности -->
+      <section class="panel" id="panel-people">
+        <div class="cards" id="people-list"></div>
+      </section>
+
+      <!-- Места (районы / объекты / города) -->
+      <section class="panel" id="panel-places">
+        <div class="cards" id="places-content"></div>
+      </section>
+
+      <!-- О городе / регионе — содержимое генерируется JS -->
+      <section class="panel" id="panel-about"></section>
+
+    </aside>
+
+    <div id="map"></div>
+  </main>
+
+  <!-- Всплывающая сводка объекта -->
+  <div class="detail hidden" id="detail">
+    <button class="detail-close" id="detail-close">×</button>
+    <div id="detail-body"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
